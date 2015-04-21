@@ -1,6 +1,6 @@
-install:
+before_install:
   - sudo apt-get update
-  - sudo apt-get install libqt5-dev
+  - sudo apt-get install qtbase5-dev
 
 script:
   - qmake H264Naked.pro
