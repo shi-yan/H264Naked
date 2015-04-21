@@ -1,11 +1,12 @@
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install qtbase5-dev
+    - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq qt5-qmake qtbase5-dev qtdeclarative5-dev libqt5webkit5-dev libsqlite3-dev
 
 script:
   - cd h264bitstream-0.1.9
   - ./configure
   - make
-  - sudo make install
-  - qmake H264Naked.pro
+  - qmake -qt=qt5 -v
+  - qmake -qt=qt5
   - make
