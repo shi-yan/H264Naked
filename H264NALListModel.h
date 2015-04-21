@@ -1,12 +1,12 @@
 #ifndef H264NALLISTMODEL_H
 #define H264NALLISTMODEL_H
 
-#include <QAbstractListModel>
+#include <QAbstractTableModel>
 #include <QByteArray>
 #include <h264_stream.h>
 #include <QVector>
 
-class H264NALListModel : public QAbstractListModel
+class H264NALListModel : public QAbstractTableModel
 {
     Q_OBJECT
 
@@ -19,6 +19,8 @@ public:
     ~H264NALListModel();
 
     int rowCount(const QModelIndex &parent) const;
+    int columnCount(const QModelIndex &parent) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QVariant data(const QModelIndex &index, int role) const;
 
 private:

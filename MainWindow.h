@@ -22,6 +22,7 @@ private:
 
 private slots:
     void onOpenFile();
+    void onNalTableItemClicked(QModelIndex);
 };
 
 #endif // MAINWINDOW_H

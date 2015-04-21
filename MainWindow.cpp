@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->openPushButton, SIGNAL(clicked()), this, SLOT(onOpenFile()));
+    connect(ui->nalTableView, SIGNAL(clicked(QModelIndex)), this, SLOT(onNalTableItemClicked(QModelIndex)));
 }
 
 MainWindow::~MainWindow()
@@ -34,10 +36,24 @@ void MainWindow::onOpenFile()
 
     m_currentH264Model = new H264NALListModel(filename, this);
 
-    ui->nalListView->setModel(m_currentH264Model);
+    ui->nalTableView->setModel(m_currentH264Model);
+
+    for (int c = 0; c < ui->nalTableView->horizontalHeader()->count(); ++c)
+    {
+        ui->nalTableView->horizontalHeader()->setSectionResizeMode(c, QHeaderView::Stretch);
+    }
 
     if (oldModel)
     {
         delete oldModel;
+    }
+}
+
+void MainWindow::onNalTableItemClicked(QModelIndex index)
+{
+    qDebug() << index.row();
+    if (m_currentH264Model)
+    {
+        qDebug() << m_currentH264Model->data(index, Qt::UserRole).toString();
     }
 }
