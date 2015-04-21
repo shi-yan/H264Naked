@@ -3,5 +3,9 @@ before_install:
   - sudo apt-get install qtbase5-dev
 
 script:
+  - cd h264bitstream-0.1.9
+  - ./configure
+  - make
+  - sudo make install
   - qmake H264Naked.pro
   - make
