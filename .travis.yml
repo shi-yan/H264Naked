@@ -7,6 +7,8 @@ script:
   - cd h264bitstream-0.1.9
   - ./configure
   - make
+  - sudo make install
+  - cd ..
   - qmake -qt=qt5 -v
   - qmake -qt=qt5
   - make

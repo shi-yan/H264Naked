@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "H264NALListModel.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +18,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    H264NALListModel *m_currentH264Model;
+
+private slots:
+    void onOpenFile();
 };
 
 #endif // MAINWINDOW_H
