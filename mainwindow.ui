@@ -32,11 +32,11 @@
     </property>
     <item>
      <widget class="QWidget" name="fileWidget" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QHBoxLayout" name="fileWidgetHorizontalLayout">
        <item>
         <widget class="QLabel" name="openLabel">
          <property name="text">
-          <string>TextLabel</string>
+          <string>File:</string>
          </property>
         </widget>
        </item>
@@ -59,7 +59,7 @@
     </item>
     <item>
      <widget class="QWidget" name="h264Widget" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QHBoxLayout" name="h264WidgetHorizontalLayout">
        <item>
         <widget class="QListView" name="nalListView">
          <property name="sizePolicy">

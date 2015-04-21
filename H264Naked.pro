@@ -13,8 +13,17 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        MainWindow.cpp
+        MainWindow.cpp \
+    H264NALListModel.cpp
 
-HEADERS  += MainWindow.h
+HEADERS  += MainWindow.h \
+    H264NALListModel.h
 
 FORMS    += mainwindow.ui
+
+macx:INCLUDEPATH += /usr/local/include
+macx: LIBS += -L/usr/local/lib \
+              -lh264bitstream
+
+unix:!macx: LIBS += -lh264bitstream
+

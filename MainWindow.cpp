@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_mainwindow.h"
 #include <QFileDialog>
+#include <QFileInfo>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,6 +21,10 @@ void MainWindow::onOpenFile()
 {
     QString filename = QFileDialog::getOpenFileName(this,
         tr("Open H264 file"), ".", tr("H264 Files (*.h264 *.264)"));
+
+    QFileInfo fileInfo(filename);
+
+    ui->filePathLineEdit->setText(fileInfo.absoluteFilePath());
 
     H264NALListModel *oldModel = NULL;
     if (m_currentH264Model)

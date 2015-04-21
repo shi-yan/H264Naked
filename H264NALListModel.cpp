@@ -53,7 +53,45 @@ QVariant H264NALListModel::data(const QModelIndex &index, int role) const
     switch(role)
     {
     case Qt::DisplayRole:
-        return QString("haha");
+    {
+        h264_stream_t *h = m_nalList[index.row()];
+
+        switch(h->nal->nal_unit_type)
+        {
+        case NAL_UNIT_TYPE_UNSPECIFIED:
+            return QString("Unspecified");
+        case NAL_UNIT_TYPE_CODED_SLICE_NON_IDR:
+            return QString("Coded slice of a non-IDR picture");
+        case NAL_UNIT_TYPE_CODED_SLICE_DATA_PARTITION_A:
+            return QString("Coded slice data partition A");
+        case NAL_UNIT_TYPE_CODED_SLICE_DATA_PARTITION_B:
+            return QString("Coded slice data partition B");
+        case NAL_UNIT_TYPE_CODED_SLICE_DATA_PARTITION_C:
+            return QString("Coded slice data partition C");
+        case NAL_UNIT_TYPE_CODED_SLICE_IDR:
+            return QString("Coded slice of an IDR picture");
+        case NAL_UNIT_TYPE_SEI:
+            return QString("Supplemental enhancement information (SEI)");
+        case NAL_UNIT_TYPE_SPS:
+            return QString("Sequence parameter set");
+        case NAL_UNIT_TYPE_PPS:
+            return QString("Picture parameter set");
+        case NAL_UNIT_TYPE_AUD:
+            return QString("Access unit delimiter");
+        case NAL_UNIT_TYPE_END_OF_SEQUENCE:
+            return QString("End of sequence");
+        case NAL_UNIT_TYPE_END_OF_STREAM:
+            return QString("End of stream");
+        case NAL_UNIT_TYPE_FILLER:
+            return QString("Filler data");
+        case NAL_UNIT_TYPE_SPS_EXT:
+            return QString("Sequence parameter set extension");
+        case NAL_UNIT_TYPE_CODED_SLICE_AUX:
+            return QString("Coded slice of an auxiliary coded picture without partitioning");
+        default:
+            return QString("Unknown unit type");
+        }
+    }
     default:
         return QVariant();
     }
