@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/shi-yan/H264Naked.svg?branch=master)](https://travis-ci.org/shi-yan/H264Naked)
 
-![screenshot](H264Naked.png)
+![screenshot](H264Naked_screenshot.png)
 
-[Mac Binary Download](builds/H264Naked_mac.zip "Download H264Naked for Mac")
+[Mac Binary Download](builds/H264Naked_mac.zip?raw=true "Download H264Naked for Mac")
 
 A H264Naked is a raw data viewer for H264 video stream.
 
