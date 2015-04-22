@@ -37,12 +37,12 @@ void MainWindow::onOpenFile()
     m_currentH264Model = new H264NALListModel(filename, this);
 
     ui->nalTableView->setModel(m_currentH264Model);
-
+/*
     for (int c = 0; c < ui->nalTableView->horizontalHeader()->count(); ++c)
     {
         ui->nalTableView->horizontalHeader()->setSectionResizeMode(c, QHeaderView::Stretch);
     }
-
+*/
     if (oldModel)
     {
         delete oldModel;
@@ -51,9 +51,8 @@ void MainWindow::onOpenFile()
 
 void MainWindow::onNalTableItemClicked(QModelIndex index)
 {
-    qDebug() << index.row();
     if (m_currentH264Model)
     {
-        qDebug() << m_currentH264Model->data(index, Qt::UserRole).toString();
+        ui->nalPlainTextEdit->setPlainText(m_currentH264Model->data(index, Qt::UserRole).toString());
     }
 }

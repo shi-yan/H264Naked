@@ -76,7 +76,11 @@
            <enum>QAbstractItemView::SelectRows</enum>
           </property>
          </widget>
-         <widget class="QPlainTextEdit" name="nalPlainTextEdit"/>
+         <widget class="QPlainTextEdit" name="nalPlainTextEdit">
+          <property name="lineWrapMode">
+           <enum>QPlainTextEdit::NoWrap</enum>
+          </property>
+         </widget>
         </widget>
        </item>
       </layout>

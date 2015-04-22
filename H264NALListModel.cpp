@@ -2,119 +2,120 @@
 #include <QFile>
 #include <QColor>
 #include <QDebug>
+#include <QTextStream>
 
-void print_bytes(char *buffer, uint8_t* buf, int len);
-void print_slice_header(char *buffer, slice_header_t* sh);
+void print_bytes(QTextStream &ts, uint8_t* buf, int len);
+void print_slice_header(QTextStream &ts, slice_header_t* sh);
 
 /***************************** debug ******************************/
 
-void print_sps(char *buffer, sps_t* sps)
+void print_sps(QTextStream &ts, sps_t* sps)
 {
-    sprintf(buffer, "======= SPS =======\n");
-    sprintf(buffer, " profile_idc : %d \n", sps->profile_idc );
-    sprintf(buffer, " constraint_set0_flag : %d \n", sps->constraint_set0_flag );
-    sprintf(buffer, " constraint_set1_flag : %d \n", sps->constraint_set1_flag );
-    sprintf(buffer, " constraint_set2_flag : %d \n", sps->constraint_set2_flag );
-    sprintf(buffer, " constraint_set3_flag : %d \n", sps->constraint_set3_flag );
-    sprintf(buffer, " constraint_set4_flag : %d \n", sps->constraint_set4_flag );
-    sprintf(buffer, " constraint_set5_flag : %d \n", sps->constraint_set5_flag );
-    sprintf(buffer, " reserved_zero_2bits : %d \n", sps->reserved_zero_2bits );
-    sprintf(buffer, " level_idc : %d \n", sps->level_idc );
-    sprintf(buffer, " seq_parameter_set_id : %d \n", sps->seq_parameter_set_id );
-    sprintf(buffer, " chroma_format_idc : %d \n", sps->chroma_format_idc );
-    sprintf(buffer, " residual_colour_transform_flag : %d \n", sps->residual_colour_transform_flag );
-    sprintf(buffer, " bit_depth_luma_minus8 : %d \n", sps->bit_depth_luma_minus8 );
-    sprintf(buffer, " bit_depth_chroma_minus8 : %d \n", sps->bit_depth_chroma_minus8 );
-    sprintf(buffer, " qpprime_y_zero_transform_bypass_flag : %d \n", sps->qpprime_y_zero_transform_bypass_flag );
-    sprintf(buffer, " seq_scaling_matrix_present_flag : %d \n", sps->seq_scaling_matrix_present_flag );
+    ts << "======= SPS =======\n";
+    ts << " profile_idc :" << sps->profile_idc <<"\n";
+    ts << " constraint_set0_flag :"<< sps->constraint_set0_flag <<"\n";
+    ts << " constraint_set1_flag :" << sps->constraint_set1_flag <<"\n";
+    ts << " constraint_set2_flag :" << sps->constraint_set2_flag <<"\n";
+    ts << " constraint_set3_flag :" << sps->constraint_set3_flag <<"\n";
+    ts << " constraint_set4_flag :" << sps->constraint_set4_flag <<"\n";
+    ts << " constraint_set5_flag :" << sps->constraint_set5_flag <<"\n";
+    ts << " reserved_zero_2bits :" << sps->reserved_zero_2bits <<"\n";
+    ts << " level_idc :" << sps->level_idc <<"\n";
+    ts << " seq_parameter_set_id :" << sps->seq_parameter_set_id <<"\n";
+    ts << " chroma_format_idc :" << sps->chroma_format_idc <<"\n";
+    ts << " residual_colour_transform_flag :" << sps->residual_colour_transform_flag <<"\n";
+    ts << " bit_depth_luma_minus8 :" << sps->bit_depth_luma_minus8 <<"\n";
+    ts << " bit_depth_chroma_minus8 :" << sps->bit_depth_chroma_minus8 <<"\n";
+    ts << " qpprime_y_zero_transform_bypass_flag :" << sps->qpprime_y_zero_transform_bypass_flag <<"\n";
+    ts << " seq_scaling_matrix_present_flag :" << sps->seq_scaling_matrix_present_flag <<"\n";
     //  int seq_scaling_list_present_flag[8];
     //  void* ScalingList4x4[6];
     //  int UseDefaultScalingMatrix4x4Flag[6];
     //  void* ScalingList8x8[2];
     //  int UseDefaultScalingMatrix8x8Flag[2];
-    sprintf(buffer, " log2_max_frame_num_minus4 : %d \n", sps->log2_max_frame_num_minus4 );
-    sprintf(buffer, " pic_order_cnt_type : %d \n", sps->pic_order_cnt_type );
-      sprintf(buffer, "   log2_max_pic_order_cnt_lsb_minus4 : %d \n", sps->log2_max_pic_order_cnt_lsb_minus4 );
-      sprintf(buffer, "   delta_pic_order_always_zero_flag : %d \n", sps->delta_pic_order_always_zero_flag );
-      sprintf(buffer, "   offset_for_non_ref_pic : %d \n", sps->offset_for_non_ref_pic );
-      sprintf(buffer, "   offset_for_top_to_bottom_field : %d \n", sps->offset_for_top_to_bottom_field );
-      sprintf(buffer, "   num_ref_frames_in_pic_order_cnt_cycle : %d \n", sps->num_ref_frames_in_pic_order_cnt_cycle );
+    ts << " log2_max_frame_num_minus4 :" << sps->log2_max_frame_num_minus4 <<"\n";
+    ts << " pic_order_cnt_type :" << sps->pic_order_cnt_type <<"\n";
+      ts << "   log2_max_pic_order_cnt_lsb_minus4 :" << sps->log2_max_pic_order_cnt_lsb_minus4 <<"\n";
+      ts << "   delta_pic_order_always_zero_flag :" << sps->delta_pic_order_always_zero_flag <<"\n";
+      ts << "   offset_for_non_ref_pic :" << sps->offset_for_non_ref_pic <<"\n";
+      ts << "   offset_for_top_to_bottom_field :" << sps->offset_for_top_to_bottom_field <<"\n";
+      ts << "   num_ref_frames_in_pic_order_cnt_cycle :" << sps->num_ref_frames_in_pic_order_cnt_cycle <<"\n";
     //  int offset_for_ref_frame[256];
-    sprintf(buffer, " num_ref_frames : %d \n", sps->num_ref_frames );
-    sprintf(buffer, " gaps_in_frame_num_value_allowed_flag : %d \n", sps->gaps_in_frame_num_value_allowed_flag );
-    sprintf(buffer, " pic_width_in_mbs_minus1 : %d \n", sps->pic_width_in_mbs_minus1 );
-    sprintf(buffer, " pic_height_in_map_units_minus1 : %d \n", sps->pic_height_in_map_units_minus1 );
-    sprintf(buffer, " frame_mbs_only_flag : %d \n", sps->frame_mbs_only_flag );
-    sprintf(buffer, " mb_adaptive_frame_field_flag : %d \n", sps->mb_adaptive_frame_field_flag );
-    sprintf(buffer, " direct_8x8_inference_flag : %d \n", sps->direct_8x8_inference_flag );
-    sprintf(buffer, " frame_cropping_flag : %d \n", sps->frame_cropping_flag );
-      sprintf(buffer, "   frame_crop_left_offset : %d \n", sps->frame_crop_left_offset );
-      sprintf(buffer, "   frame_crop_right_offset : %d \n", sps->frame_crop_right_offset );
-      sprintf(buffer, "   frame_crop_top_offset : %d \n", sps->frame_crop_top_offset );
-      sprintf(buffer, "   frame_crop_bottom_offset : %d \n", sps->frame_crop_bottom_offset );
-    sprintf(buffer, " vui_parameters_present_flag : %d \n", sps->vui_parameters_present_flag );
+    ts << " num_ref_frames :" << sps->num_ref_frames <<"\n";
+    ts << " gaps_in_frame_num_value_allowed_flag :" << sps->gaps_in_frame_num_value_allowed_flag <<"\n";
+    ts << " pic_width_in_mbs_minus1 :" << sps->pic_width_in_mbs_minus1 <<"\n";
+    ts << " pic_height_in_map_units_minus1 :" << sps->pic_height_in_map_units_minus1 <<"\n";
+    ts << " frame_mbs_only_flag :" << sps->frame_mbs_only_flag <<"\n";
+    ts << " mb_adaptive_frame_field_flag :" << sps->mb_adaptive_frame_field_flag <<"\n";
+    ts << " direct_8x8_inference_flag :" << sps->direct_8x8_inference_flag <<"\n";
+    ts << " frame_cropping_flag :" << sps->frame_cropping_flag <<"\n";
+    ts << "   frame_crop_left_offset :" << sps->frame_crop_left_offset <<"\n";
+    ts << "   frame_crop_right_offset :" << sps->frame_crop_right_offset <<"\n";
+    ts << "   frame_crop_top_offset :" << sps->frame_crop_top_offset <<"\n";
+    ts << "   frame_crop_bottom_offset :" << sps->frame_crop_bottom_offset <<"\n";
+    ts << " vui_parameters_present_flag :" << sps->vui_parameters_present_flag <<"\n";
 
-    sprintf(buffer, "=== VUI ===\n");
-    sprintf(buffer, " aspect_ratio_info_present_flag : %d \n", sps->vui.aspect_ratio_info_present_flag );
-      sprintf(buffer, "   aspect_ratio_idc : %d \n", sps->vui.aspect_ratio_idc );
-        sprintf(buffer, "     sar_width : %d \n", sps->vui.sar_width );
-        sprintf(buffer, "     sar_height : %d \n", sps->vui.sar_height );
-    sprintf(buffer, " overscan_info_present_flag : %d \n", sps->vui.overscan_info_present_flag );
-      sprintf(buffer, "   overscan_appropriate_flag : %d \n", sps->vui.overscan_appropriate_flag );
-    sprintf(buffer, " video_signal_type_present_flag : %d \n", sps->vui.video_signal_type_present_flag );
-      sprintf(buffer, "   video_format : %d \n", sps->vui.video_format );
-      sprintf(buffer, "   video_full_range_flag : %d \n", sps->vui.video_full_range_flag );
-      sprintf(buffer, "   colour_description_present_flag : %d \n", sps->vui.colour_description_present_flag );
-        sprintf(buffer, "     colour_primaries : %d \n", sps->vui.colour_primaries );
-        sprintf(buffer, "   transfer_characteristics : %d \n", sps->vui.transfer_characteristics );
-        sprintf(buffer, "   matrix_coefficients : %d \n", sps->vui.matrix_coefficients );
-    sprintf(buffer, " chroma_loc_info_present_flag : %d \n", sps->vui.chroma_loc_info_present_flag );
-      sprintf(buffer, "   chroma_sample_loc_type_top_field : %d \n", sps->vui.chroma_sample_loc_type_top_field );
-      sprintf(buffer, "   chroma_sample_loc_type_bottom_field : %d \n", sps->vui.chroma_sample_loc_type_bottom_field );
-    sprintf(buffer, " timing_info_present_flag : %d \n", sps->vui.timing_info_present_flag );
-      sprintf(buffer, "   num_units_in_tick : %d \n", sps->vui.num_units_in_tick );
-      sprintf(buffer, "   time_scale : %d \n", sps->vui.time_scale );
-      sprintf(buffer, "   fixed_frame_rate_flag : %d \n", sps->vui.fixed_frame_rate_flag );
-    sprintf(buffer, " nal_hrd_parameters_present_flag : %d \n", sps->vui.nal_hrd_parameters_present_flag );
-    sprintf(buffer, " vcl_hrd_parameters_present_flag : %d \n", sps->vui.vcl_hrd_parameters_present_flag );
-      sprintf(buffer, "   low_delay_hrd_flag : %d \n", sps->vui.low_delay_hrd_flag );
-    sprintf(buffer, " pic_struct_present_flag : %d \n", sps->vui.pic_struct_present_flag );
-    sprintf(buffer, " bitstream_restriction_flag : %d \n", sps->vui.bitstream_restriction_flag );
-      sprintf(buffer, "   motion_vectors_over_pic_boundaries_flag : %d \n", sps->vui.motion_vectors_over_pic_boundaries_flag );
-      sprintf(buffer, "   max_bytes_per_pic_denom : %d \n", sps->vui.max_bytes_per_pic_denom );
-      sprintf(buffer, "   max_bits_per_mb_denom : %d \n", sps->vui.max_bits_per_mb_denom );
-      sprintf(buffer, "   log2_max_mv_length_horizontal : %d \n", sps->vui.log2_max_mv_length_horizontal );
-      sprintf(buffer, "   log2_max_mv_length_vertical : %d \n", sps->vui.log2_max_mv_length_vertical );
-      sprintf(buffer, "   num_reorder_frames : %d \n", sps->vui.num_reorder_frames );
-      sprintf(buffer, "   max_dec_frame_buffering : %d \n", sps->vui.max_dec_frame_buffering );
+    ts << "=== VUI ===\n";
+    ts << " aspect_ratio_info_present_flag :" << sps->vui.aspect_ratio_info_present_flag <<"\n";
+    ts << "   aspect_ratio_idc :" << sps->vui.aspect_ratio_idc <<"\n";
+    ts << "     sar_width :" << sps->vui.sar_width <<"\n";
+    ts << "     sar_height :" << sps->vui.sar_height <<"\n";
+    ts << " overscan_info_present_flag :" << sps->vui.overscan_info_present_flag <<"\n";
+    ts << "   overscan_appropriate_flag :" << sps->vui.overscan_appropriate_flag <<"\n";
+    ts << " video_signal_type_present_flag :" << sps->vui.video_signal_type_present_flag <<"\n";
+    ts << "   video_format :" << sps->vui.video_format <<"\n";
+    ts << "   video_full_range_flag :" << sps->vui.video_full_range_flag <<"\n";
+    ts << "   colour_description_present_flag :" << sps->vui.colour_description_present_flag <<"\n";
+    ts << "     colour_primaries :" << sps->vui.colour_primaries <<"\n";
+    ts << "   transfer_characteristics :" << sps->vui.transfer_characteristics <<"\n";
+    ts << "   matrix_coefficients :" << sps->vui.matrix_coefficients <<"\n";
+    ts << " chroma_loc_info_present_flag :" << sps->vui.chroma_loc_info_present_flag <<"\n";
+    ts << "   chroma_sample_loc_type_top_field :" << sps->vui.chroma_sample_loc_type_top_field <<"\n";
+    ts << "   chroma_sample_loc_type_bottom_field :" << sps->vui.chroma_sample_loc_type_bottom_field <<"\n";
+    ts << " timing_info_present_flag :" << sps->vui.timing_info_present_flag <<"\n";
+    ts << "   num_units_in_tick :" << sps->vui.num_units_in_tick <<"\n";
+    ts << "   time_scale :" << sps->vui.time_scale <<"\n";
+    ts << "   fixed_frame_rate_flag :" << sps->vui.fixed_frame_rate_flag <<"\n";
+    ts << " nal_hrd_parameters_present_flag :" << sps->vui.nal_hrd_parameters_present_flag <<"\n";
+    ts << " vcl_hrd_parameters_present_flag :" << sps->vui.vcl_hrd_parameters_present_flag <<"\n";
+    ts << "   low_delay_hrd_flag :" << sps->vui.low_delay_hrd_flag <<"\n";
+    ts << " pic_struct_present_flag :" << sps->vui.pic_struct_present_flag <<"\n";
+    ts << " bitstream_restriction_flag :" << sps->vui.bitstream_restriction_flag <<"\n";
+    ts << "   motion_vectors_over_pic_boundaries_flag :" << sps->vui.motion_vectors_over_pic_boundaries_flag <<"\n";
+    ts << "   max_bytes_per_pic_denom :" << sps->vui.max_bytes_per_pic_denom <<"\n";
+    ts << "   max_bits_per_mb_denom :" << sps->vui.max_bits_per_mb_denom <<"\n";
+    ts << "   log2_max_mv_length_horizontal :" << sps->vui.log2_max_mv_length_horizontal <<"\n";
+    ts << "   log2_max_mv_length_vertical :" << sps->vui.log2_max_mv_length_vertical <<"\n";
+    ts << "   num_reorder_frames :" << sps->vui.num_reorder_frames <<"\n";
+    ts << "   max_dec_frame_buffering :" << sps->vui.max_dec_frame_buffering <<"\n";
 
-    sprintf(buffer, "=== HRD ===\n");
-    sprintf(buffer, " cpb_cnt_minus1 : %d \n", sps->hrd.cpb_cnt_minus1 );
-    sprintf(buffer, " bit_rate_scale : %d \n", sps->hrd.bit_rate_scale );
-    sprintf(buffer, " cpb_size_scale : %d \n", sps->hrd.cpb_size_scale );
+    ts << "=== HRD ===\n";
+    ts << " cpb_cnt_minus1 :" << sps->hrd.cpb_cnt_minus1 <<"\n";
+    ts << " bit_rate_scale :" << sps->hrd.bit_rate_scale <<"\n";
+    ts << " cpb_size_scale :" << sps->hrd.cpb_size_scale <<"\n";
     int SchedSelIdx;
     for( SchedSelIdx = 0; SchedSelIdx <= sps->hrd.cpb_cnt_minus1; SchedSelIdx++ )
     {
-        sprintf(buffer, "   bit_rate_value_minus1[%d] : %d \n", SchedSelIdx, sps->hrd.bit_rate_value_minus1[SchedSelIdx] ); // up to cpb_cnt_minus1, which is <= 31
-        sprintf(buffer, "   cpb_size_value_minus1[%d] : %d \n", SchedSelIdx, sps->hrd.cpb_size_value_minus1[SchedSelIdx] );
-        sprintf(buffer, "   cbr_flag[%d] : %d \n", SchedSelIdx, sps->hrd.cbr_flag[SchedSelIdx] );
+        ts << "   bit_rate_value_minus1[" << SchedSelIdx <<"] :"<< sps->hrd.bit_rate_value_minus1[SchedSelIdx] <<"\n"; // up to cpb_cnt_minus1, which is <= 31
+        ts << "   cpb_size_value_minus1[" << SchedSelIdx << "] :"<< sps->hrd.cpb_size_value_minus1[SchedSelIdx] <<"\n";
+        ts << "   cbr_flag[" << SchedSelIdx <<"] :" << sps->hrd.cbr_flag[SchedSelIdx] <<"\n";
     }
-    sprintf(buffer, " initial_cpb_removal_delay_length_minus1 : %d \n", sps->hrd.initial_cpb_removal_delay_length_minus1 );
-    sprintf(buffer, " cpb_removal_delay_length_minus1 : %d \n", sps->hrd.cpb_removal_delay_length_minus1 );
-    sprintf(buffer, " dpb_output_delay_length_minus1 : %d \n", sps->hrd.dpb_output_delay_length_minus1 );
-    sprintf(buffer, " time_offset_length : %d \n", sps->hrd.time_offset_length );
+    ts << " initial_cpb_removal_delay_length_minus1 :" << sps->hrd.initial_cpb_removal_delay_length_minus1 <<"\n";
+    ts << " cpb_removal_delay_length_minus1 :" << sps->hrd.cpb_removal_delay_length_minus1 <<"\n";
+    ts << " dpb_output_delay_length_minus1 :" << sps->hrd.dpb_output_delay_length_minus1 <<"\n";
+    ts << " time_offset_length :" << sps->hrd.time_offset_length <<"\n";
 }
 
 
-void print_pps(char *buffer, pps_t* pps)
+void print_pps(QTextStream &ts, pps_t* pps)
 {
-    sprintf(buffer, "======= PPS =======\n");
-    sprintf(buffer, " pic_parameter_set_id : %d \n", pps->pic_parameter_set_id );
-    sprintf(buffer, " seq_parameter_set_id : %d \n", pps->seq_parameter_set_id );
-    sprintf(buffer, " entropy_coding_mode_flag : %d \n", pps->entropy_coding_mode_flag );
-    sprintf(buffer, " pic_order_present_flag : %d \n", pps->pic_order_present_flag );
-    sprintf(buffer, " num_slice_groups_minus1 : %d \n", pps->num_slice_groups_minus1 );
-    sprintf(buffer, " slice_group_map_type : %d \n", pps->slice_group_map_type );
+    ts << "======= PPS =======\n";
+    ts << " pic_parameter_set_id :" << pps->pic_parameter_set_id <<"\n";
+    ts << " seq_parameter_set_id :" << pps->seq_parameter_set_id <<"\n";
+    ts << " entropy_coding_mode_flag :" << pps->entropy_coding_mode_flag <<"\n";
+    ts << " pic_order_present_flag :" << pps->pic_order_present_flag <<"\n";
+    ts << " num_slice_groups_minus1 :" << pps->num_slice_groups_minus1 <<"\n";
+    ts << " slice_group_map_type :" << pps->slice_group_map_type <<"\n";
     //  int run_length_minus1[8]; // up to num_slice_groups_minus1, which is <= 7 in Baseline and Extended, 0 otheriwse
     //  int top_left[8];
     //  int bottom_right[8];
@@ -122,30 +123,30 @@ void print_pps(char *buffer, pps_t* pps)
     //  int slice_group_change_rate_minus1;
     //  int pic_size_in_map_units_minus1;
     //  int slice_group_id[256]; // FIXME what size?
-    sprintf(buffer, " num_ref_idx_l0_active_minus1 : %d \n", pps->num_ref_idx_l0_active_minus1 );
-    sprintf(buffer, " num_ref_idx_l1_active_minus1 : %d \n", pps->num_ref_idx_l1_active_minus1 );
-    sprintf(buffer, " weighted_pred_flag : %d \n", pps->weighted_pred_flag );
-    sprintf(buffer, " weighted_bipred_idc : %d \n", pps->weighted_bipred_idc );
-    sprintf(buffer, " pic_init_qp_minus26 : %d \n", pps->pic_init_qp_minus26 );
-    sprintf(buffer, " pic_init_qs_minus26 : %d \n", pps->pic_init_qs_minus26 );
-    sprintf(buffer, " chroma_qp_index_offset : %d \n", pps->chroma_qp_index_offset );
-    sprintf(buffer, " deblocking_filter_control_present_flag : %d \n", pps->deblocking_filter_control_present_flag );
-    sprintf(buffer, " constrained_intra_pred_flag : %d \n", pps->constrained_intra_pred_flag );
-    sprintf(buffer, " redundant_pic_cnt_present_flag : %d \n", pps->redundant_pic_cnt_present_flag );
-    sprintf(buffer, " transform_8x8_mode_flag : %d \n", pps->transform_8x8_mode_flag );
-    sprintf(buffer, " pic_scaling_matrix_present_flag : %d \n", pps->pic_scaling_matrix_present_flag );
+    ts << " num_ref_idx_l0_active_minus1 :" << pps->num_ref_idx_l0_active_minus1 <<"\n";
+    ts << " num_ref_idx_l1_active_minus1 :" << pps->num_ref_idx_l1_active_minus1 <<"\n";
+    ts << " weighted_pred_flag :" << pps->weighted_pred_flag <<"\n";
+    ts << " weighted_bipred_idc :" << pps->weighted_bipred_idc <<"\n";
+    ts << " pic_init_qp_minus26 :" << pps->pic_init_qp_minus26 <<"\n";
+    ts << " pic_init_qs_minus26 :" << pps->pic_init_qs_minus26 <<"\n";
+    ts << " chroma_qp_index_offset :" << pps->chroma_qp_index_offset <<"\n";
+    ts << " deblocking_filter_control_present_flag :" << pps->deblocking_filter_control_present_flag <<"\n";
+    ts << " constrained_intra_pred_flag :" << pps->constrained_intra_pred_flag <<"\n";
+    ts << " redundant_pic_cnt_present_flag :" << pps->redundant_pic_cnt_present_flag <<"\n";
+    ts << " transform_8x8_mode_flag :" << pps->transform_8x8_mode_flag <<"\n";
+    ts << " pic_scaling_matrix_present_flag :" << pps->pic_scaling_matrix_present_flag <<"\n";
     //  int pic_scaling_list_present_flag[8];
     //  void* ScalingList4x4[6];
     //  int UseDefaultScalingMatrix4x4Flag[6];
     //  void* ScalingList8x8[2];
     //  int UseDefaultScalingMatrix8x8Flag[2];
-    sprintf(buffer, " second_chroma_qp_index_offset : %d \n", pps->second_chroma_qp_index_offset );
+    ts << " second_chroma_qp_index_offset :" << pps->second_chroma_qp_index_offset <<"\n";
 }
 
-void print_slice_header(char *buffer, slice_header_t* sh)
+void print_slice_header(QTextStream &ts, slice_header_t* sh)
 {
-    sprintf(buffer, "======= Slice Header =======\n");
-    sprintf(buffer, " first_mb_in_slice : %d \n", sh->first_mb_in_slice );
+    ts << "======= Slice Header =======\n";
+    ts << " first_mb_in_slice :" << sh->first_mb_in_slice <<"\n";
     const char* slice_type_name;
     switch(sh->slice_type)
     {
@@ -161,57 +162,57 @@ void print_slice_header(char *buffer, slice_header_t* sh)
     case SH_SLICE_TYPE_SI_ONLY : slice_type_name = "SI slice only"; break;
     default :                    slice_type_name = "Unknown"; break;
     }
-    sprintf(buffer, " slice_type : %d ( %s ) \n", sh->slice_type, slice_type_name );
+    ts << " slice_type :" << sh->slice_type << slice_type_name << "\n";
 
-    sprintf(buffer, " pic_parameter_set_id : %d \n", sh->pic_parameter_set_id );
-    sprintf(buffer, " frame_num : %d \n", sh->frame_num );
-    sprintf(buffer, " field_pic_flag : %d \n", sh->field_pic_flag );
-      sprintf(buffer, " bottom_field_flag : %d \n", sh->bottom_field_flag );
-    sprintf(buffer, " idr_pic_id : %d \n", sh->idr_pic_id );
-    sprintf(buffer, " pic_order_cnt_lsb : %d \n", sh->pic_order_cnt_lsb );
-    sprintf(buffer, " delta_pic_order_cnt_bottom : %d \n", sh->delta_pic_order_cnt_bottom );
+    ts << " pic_parameter_set_id :" << sh->pic_parameter_set_id <<"\n";
+    ts <<" frame_num :" << sh->frame_num << "\n";
+    ts << " field_pic_flag :" << sh->field_pic_flag <<"\n";
+    ts << " bottom_field_flag :" << sh->bottom_field_flag <<"\n";
+    ts << " idr_pic_id :" << sh->idr_pic_id <<"\n";
+    ts << " pic_order_cnt_lsb :" << sh->pic_order_cnt_lsb <<"\n";
+    ts << " delta_pic_order_cnt_bottom :" << sh->delta_pic_order_cnt_bottom <<"\n";
     // int delta_pic_order_cnt[ 2 ];
-    sprintf(buffer, " redundant_pic_cnt : %d \n", sh->redundant_pic_cnt );
-    sprintf(buffer, " direct_spatial_mv_pred_flag : %d \n", sh->direct_spatial_mv_pred_flag );
-    sprintf(buffer, " num_ref_idx_active_override_flag : %d \n", sh->num_ref_idx_active_override_flag );
-    sprintf(buffer, " num_ref_idx_l0_active_minus1 : %d \n", sh->num_ref_idx_l0_active_minus1 );
-    sprintf(buffer, " num_ref_idx_l1_active_minus1 : %d \n", sh->num_ref_idx_l1_active_minus1 );
-    sprintf(buffer, " cabac_init_idc : %d \n", sh->cabac_init_idc );
-    sprintf(buffer, " slice_qp_delta : %d \n", sh->slice_qp_delta );
-    sprintf(buffer, " sp_for_switch_flag : %d \n", sh->sp_for_switch_flag );
-    sprintf(buffer, " slice_qs_delta : %d \n", sh->slice_qs_delta );
-    sprintf(buffer, " disable_deblocking_filter_idc : %d \n", sh->disable_deblocking_filter_idc );
-    sprintf(buffer, " slice_alpha_c0_offset_div2 : %d \n", sh->slice_alpha_c0_offset_div2 );
-    sprintf(buffer, " slice_beta_offset_div2 : %d \n", sh->slice_beta_offset_div2 );
-    sprintf(buffer, " slice_group_change_cycle : %d \n", sh->slice_group_change_cycle );
+    ts << " redundant_pic_cnt :" << sh->redundant_pic_cnt <<"\n";
+    ts << " direct_spatial_mv_pred_flag :" << sh->direct_spatial_mv_pred_flag <<"\n";
+    ts << " num_ref_idx_active_override_flag :" << sh->num_ref_idx_active_override_flag <<"\n";
+    ts << " num_ref_idx_l0_active_minus1 :" << sh->num_ref_idx_l0_active_minus1 <<"\n";
+    ts << " num_ref_idx_l1_active_minus1 :" << sh->num_ref_idx_l1_active_minus1 <<"\n";
+    ts << " cabac_init_idc :" << sh->cabac_init_idc <<"\n";
+    ts << " slice_qp_delta :" << sh->slice_qp_delta <<"\n";
+    ts << " sp_for_switch_flag :" << sh->sp_for_switch_flag <<"\n";
+    ts << " slice_qs_delta :" << sh->slice_qs_delta <<"\n";
+    ts << " disable_deblocking_filter_idc :" << sh->disable_deblocking_filter_idc <<"\n";
+    ts << " slice_alpha_c0_offset_div2 :" << sh->slice_alpha_c0_offset_div2 <<"\n";
+    ts << " slice_beta_offset_div2 :" << sh->slice_beta_offset_div2 <<"\n";
+    ts << " slice_group_change_cycle :" << sh->slice_group_change_cycle <<"\n";
 
-    sprintf(buffer, "=== Prediction Weight Table ===\n");
-        sprintf(buffer, " luma_log2_weight_denom : %d \n", sh->pwt.luma_log2_weight_denom );
-        sprintf(buffer, " chroma_log2_weight_denom : %d \n", sh->pwt.chroma_log2_weight_denom );
-     //   sprintf(buffer, " luma_weight_l0_flag : %d \n", sh->pwt.luma_weight_l0_flag );
-        // int luma_weight_l0[64];
-        // int luma_offset_l0[64];
-    //    sprintf(buffer, " chroma_weight_l0_flag : %d \n", sh->pwt.chroma_weight_l0_flag );
-        // int chroma_weight_l0[64][2];
-        // int chroma_offset_l0[64][2];
-     //   sprintf(buffer, " luma_weight_l1_flag : %d \n", sh->pwt.luma_weight_l1_flag );
-        // int luma_weight_l1[64];
-        // int luma_offset_l1[64];
-    //    sprintf(buffer, " chroma_weight_l1_flag : %d \n", sh->pwt.chroma_weight_l1_flag );
-        // int chroma_weight_l1[64][2];
-        // int chroma_offset_l1[64][2];
+    ts << "=== Prediction Weight Table ===\n";
+    ts << " luma_log2_weight_denom :" << sh->pwt.luma_log2_weight_denom <<"\n";
+    ts << " chroma_log2_weight_denom :"<< sh->pwt.chroma_log2_weight_denom <<"\n";
+    ts << " luma_weight_l0_flag :"<< sh->pwt.luma_weight_l0_flag <<"\n";
+    // int luma_weight_l0[64];
+    // int luma_offset_l0[64];
+    ts << " chroma_weight_l0_flag :"<< sh->pwt.chroma_weight_l0_flag <<"\n";
+    // int chroma_weight_l0[64][2];
+    // int chroma_offset_l0[64][2];
+    ts << " luma_weight_l1_flag :"<< sh->pwt.luma_weight_l1_flag <<"\n";
+    // int luma_weight_l1[64];
+    // int luma_offset_l1[64];
+    ts << " chroma_weight_l1_flag :"<< sh->pwt.chroma_weight_l1_flag <<"\n";
+    // int chroma_weight_l1[64][2];
+    // int chroma_offset_l1[64][2];
 
-    sprintf(buffer, "=== Ref Pic List Reordering ===\n");
-        sprintf(buffer, " ref_pic_list_reordering_flag_l0 : %d \n", sh->rplr.ref_pic_list_reordering_flag_l0 );
-        sprintf(buffer, " ref_pic_list_reordering_flag_l1 : %d \n", sh->rplr.ref_pic_list_reordering_flag_l1 );
+    ts << "=== Ref Pic List Reordering ===\n";
+    ts << " ref_pic_list_reordering_flag_l0 :" << sh->rplr.ref_pic_list_reordering_flag_l0 <<"\n";
+    ts << " ref_pic_list_reordering_flag_l1 :" << sh->rplr.ref_pic_list_reordering_flag_l1 <<"\n";
         // int reordering_of_pic_nums_idc;
         // int abs_diff_pic_num_minus1;
         // int long_term_pic_num;
 
-    sprintf(buffer, "=== Decoded Ref Pic Marking ===\n");
-        sprintf(buffer, " no_output_of_prior_pics_flag : %d \n", sh->drpm.no_output_of_prior_pics_flag );
-        sprintf(buffer, " long_term_reference_flag : %d \n", sh->drpm.long_term_reference_flag );
-        sprintf(buffer, " adaptive_ref_pic_marking_mode_flag : %d \n", sh->drpm.adaptive_ref_pic_marking_mode_flag );
+    ts << "=== Decoded Ref Pic Marking ===\n";
+    ts << " no_output_of_prior_pics_flag :" << sh->drpm.no_output_of_prior_pics_flag <<"\n";
+    ts << " long_term_reference_flag :" << sh->drpm.long_term_reference_flag <<"\n";
+    ts << " adaptive_ref_pic_marking_mode_flag :" << sh->drpm.adaptive_ref_pic_marking_mode_flag <<"\n";
         // int memory_management_control_operation;
         // int difference_of_pic_nums_minus1;
         // int long_term_pic_num;
@@ -220,9 +221,9 @@ void print_slice_header(char *buffer, slice_header_t* sh)
 
 }
 
-void print_aud(char *buffer, aud_t* aud)
+void print_aud(QTextStream &ts, aud_t* aud)
 {
-    sprintf(buffer, "======= Access Unit Delimiter =======\n");
+    ts << "======= Access Unit Delimiter =======\n";
     const char* primary_pic_type_name;
     switch (aud->primary_pic_type)
     {
@@ -236,15 +237,15 @@ void print_aud(char *buffer, aud_t* aud)
     case AUD_PRIMARY_PIC_TYPE_ISIPSPB : primary_pic_type_name = "I, SI, P, SP, B"; break;
     default : primary_pic_type_name = "Unknown"; break;
     }
-    sprintf(buffer, " primary_pic_type : %d ( %s ) \n", aud->primary_pic_type, primary_pic_type_name );
+    ts << " primary_pic_type :" << aud->primary_pic_type << primary_pic_type_name <<"\n";
 }
 
-void print_seis(char *buffer, h264_stream_t* h)
+void print_seis(QTextStream &ts, h264_stream_t* h)
 {
     sei_t** seis = h->seis;
     int num_seis = h->num_seis;
 
-    sprintf(buffer, "======= SEI =======\n");
+    ts << "======= SEI =======\n";
     const char* sei_type_name;
     int i;
     for (i = 0; i < num_seis; i++)
@@ -276,12 +277,12 @@ void print_seis(char *buffer, h264_stream_t* h)
         case SEI_TYPE_STEREO_VIDEO_INFO :         sei_type_name = "Stereo video info"; break;
         default: sei_type_name = "Unknown"; break;
         }
-        sprintf(buffer, "=== %s ===\n", sei_type_name);
-        sprintf(buffer, " payloadType : %d \n", s->payloadType );
-        sprintf(buffer, " payloadSize : %d \n", s->payloadSize );
+        ts << "=== " << sei_type_name<<"===\n";
+        ts << " payloadType :" << s->payloadType <<"\n";
+        ts << " payloadSize :" << s->payloadSize <<"\n";
 
-        sprintf(buffer, " payload : " );
-        print_bytes(buffer, s->payload, s->payloadSize);
+        ts << " payload : \n";
+        print_bytes(ts, s->payload, s->payloadSize);
     }
 }
 
@@ -291,11 +292,11 @@ void print_seis(char *buffer, h264_stream_t* h)
  @param[in]      h          the stream object
  @param[in]      nal        the nal unit
  */
-void print_nal(char *buffer, h264_stream_t* h, nal_t* nal)
+void print_nal(QTextStream &ts, h264_stream_t* h, nal_t* nal)
 {
-    sprintf(buffer, "==================== NAL ====================\n");
-    sprintf(buffer, " forbidden_zero_bit : %d \n", nal->forbidden_zero_bit );
-    sprintf(buffer, " nal_ref_idc : %d \n", nal->nal_ref_idc );
+    ts << "==================== NAL ====================\n";
+    ts << " forbidden_zero_bit :" << nal->forbidden_zero_bit << "\n";
+    ts << " nal_ref_idc :" << nal->nal_ref_idc << "\n";
     // TODO make into subroutine
     const char* nal_unit_type_name;
     switch (nal->nal_unit_type)
@@ -320,25 +321,25 @@ void print_nal(char *buffer, h264_stream_t* h, nal_t* nal)
         // 24..31    // Unspecified
     default :                                           nal_unit_type_name = "Unknown"; break;
     }
-    sprintf(buffer, " nal_unit_type : %d ( %s ) \n", nal->nal_unit_type, nal_unit_type_name );
+    ts << " nal_unit_type : " << nal->nal_unit_type << nal_unit_type_name <<"\n";
 
-    if( nal->nal_unit_type == NAL_UNIT_TYPE_CODED_SLICE_NON_IDR) { print_slice_header(buffer, h->sh); }
-    else if( nal->nal_unit_type == NAL_UNIT_TYPE_CODED_SLICE_IDR) { print_slice_header(buffer, h->sh); }
-    else if( nal->nal_unit_type == NAL_UNIT_TYPE_SPS) { print_sps(buffer, h->sps); }
-    else if( nal->nal_unit_type == NAL_UNIT_TYPE_PPS) { print_pps(buffer, h->pps); }
-    else if( nal->nal_unit_type == NAL_UNIT_TYPE_AUD) { print_aud(buffer, h->aud); }
-    else if( nal->nal_unit_type == NAL_UNIT_TYPE_SEI) { print_seis(buffer, h ); }
+    if( nal->nal_unit_type == NAL_UNIT_TYPE_CODED_SLICE_NON_IDR) { print_slice_header(ts, h->sh); }
+    else if( nal->nal_unit_type == NAL_UNIT_TYPE_CODED_SLICE_IDR) { print_slice_header(ts, h->sh); }
+    else if( nal->nal_unit_type == NAL_UNIT_TYPE_SPS) { print_sps(ts, h->sps); }
+    else if( nal->nal_unit_type == NAL_UNIT_TYPE_PPS) { print_pps(ts, h->pps); }
+    else if( nal->nal_unit_type == NAL_UNIT_TYPE_AUD) { print_aud(ts, h->aud); }
+    else if( nal->nal_unit_type == NAL_UNIT_TYPE_SEI) { print_seis(ts, h ); }
 }
 
-void print_bytes(char *buffer, uint8_t* buf, int len)
+void print_bytes(QTextStream &ts, uint8_t* buf, int len)
 {
     int i;
     for (i = 0; i < len; i++)
     {
-        sprintf(buffer, "%02X ", buf[i]);
-        if ((i+1) % 16 == 0) { printf ("\n"); }
+        ts << QString("%1 ").arg(buf[i] , 0, 16, QLatin1Char('0'));
+        if ((i+1) % 16 == 0) { ts<< "\n"; }
     }
-    sprintf(buffer, "\n");
+    ts << "\n";
 }
 
 H264NALListModel::H264NALListModel(const QString &filename, QObject *parent)
@@ -374,7 +375,6 @@ void H264NALListModel::parse()
         {
             h264_stream_t *h = h264_new();
             read_nal_unit(h, &(((uint8_t*)m_fileBuffer.data())[nal_start + offset]), nal_end - nal_start);
-            //print_nal(h, h->nal);
             m_nalList.push_back(h);
         }
 
@@ -431,12 +431,12 @@ QVariant H264NALListModel::data(const QModelIndex &index, int role) const
 
     if(role == Qt::UserRole)
     {
-        QByteArray temp(50000, 0);
 
-        print_nal(temp.data(), h, h->nal);
-        qDebug() << temp;
+        QString result;
+        QTextStream ts(&result);
 
-        QString result = QString::fromLocal8Bit(temp);
+        print_nal(ts, h, h->nal);
+
         return result;
     }
 
