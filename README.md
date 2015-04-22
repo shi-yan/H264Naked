@@ -5,6 +5,7 @@
 ![screenshot](H264Naked_screenshot.png)
 
 [Mac Binary Download](builds/H264Naked_mac.zip?raw=true "Download H264Naked for Mac")
+
 [Linux Binary Download](builds/H264Naked_Linux.tar.gz?raw=true "Download H264Naked for Linux")
 
 H264Naked is a raw data viewer for H264 video stream.
