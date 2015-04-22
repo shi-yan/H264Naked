@@ -24,8 +24,9 @@ FORMS    += mainwindow.ui
 macx:INCLUDEPATH += /usr/local/include
 macx: LIBS += -L/usr/local/lib \
               -lh264bitstream
+macx:ICON = H264Naked.icns
 
 unix:!macx: LIBS += -lh264bitstream
-macx:ICON = H264Naked.icns
+unix:!macx: QMAKE_LFLAGS += '-Wl,-rpath=\'\$$ORIGIN\''
 
 
