@@ -26,4 +26,6 @@ macx: LIBS += -L/usr/local/lib \
               -lh264bitstream
 
 unix:!macx: LIBS += -lh264bitstream
+macx:ICON = H264Naked.icns
+
 
