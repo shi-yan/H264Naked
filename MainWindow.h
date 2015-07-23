@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QShortcut>
 #include "H264NALListModel.h"
 
 namespace Ui {
@@ -18,6 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QShortcut openShortcut;
     H264NALListModel *m_currentH264Model;
 
 private slots:

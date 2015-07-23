@@ -3,10 +3,12 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QDebug>
+#include <QKeySequence>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    openShortcut(QKeySequence::Open, this, SLOT(onOpenFile())),
     m_currentH264Model(NULL)
 {
     ui->setupUi(this);
