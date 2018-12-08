@@ -162,7 +162,7 @@ void print_slice_header(QTextStream &ts, slice_header_t* sh)
     case SH_SLICE_TYPE_SI_ONLY : slice_type_name = "SI slice only"; break;
     default :                    slice_type_name = "Unknown"; break;
     }
-    ts << " slice_type :" << sh->slice_type << slice_type_name << "\n";
+    ts << " slice_type :" << sh->slice_type << " " << slice_type_name << "\n";
 
     ts << " pic_parameter_set_id :" << sh->pic_parameter_set_id <<"\n";
     ts <<" frame_num :" << sh->frame_num << "\n";
@@ -321,7 +321,7 @@ void print_nal(QTextStream &ts, h264_stream_t* h, nal_t* nal)
         // 24..31    // Unspecified
     default :                                           nal_unit_type_name = "Unknown"; break;
     }
-    ts << " nal_unit_type : " << nal->nal_unit_type << nal_unit_type_name <<"\n";
+    ts << " nal_unit_type : " << nal->nal_unit_type << " " << nal_unit_type_name <<"\n";
 
     if( nal->nal_unit_type == NAL_UNIT_TYPE_CODED_SLICE_NON_IDR) { print_slice_header(ts, h->sh); }
     else if( nal->nal_unit_type == NAL_UNIT_TYPE_CODED_SLICE_IDR) { print_slice_header(ts, h->sh); }
@@ -375,7 +375,7 @@ void H264NALListModel::parse()
         {
             h264_stream_t *h = h264_new();
             read_nal_unit(h, &(((uint8_t*)m_fileBuffer.data())[nal_start + offset]), nal_end - nal_start);
-            m_nalList.push_back(h);
+            m_nalList.push_back(QPair<h264_stream_t*, int>(h, nal_end - nal_start));
         }
 
         offset += nal_end;
@@ -391,7 +391,7 @@ int H264NALListModel::rowCount(const QModelIndex &parent) const
 int H264NALListModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return 3;
+    return 4;
 }
 
 QVariant H264NALListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -419,6 +419,8 @@ QVariant H264NALListModel::headerData(int section, Qt::Orientation orientation, 
                 return QString("Reference Idc");
             case 2:
                 return QString("Size");
+            case 3:
+                return QString("Parsed Size");
             }
         }
     }
@@ -427,7 +429,7 @@ QVariant H264NALListModel::headerData(int section, Qt::Orientation orientation, 
 
 QVariant H264NALListModel::data(const QModelIndex &index, int role) const
 {
-    h264_stream_t *h = m_nalList[index.row()];
+    h264_stream_t *h = m_nalList[index.row()].first;
 
     if(role == Qt::UserRole)
     {
@@ -535,7 +537,16 @@ QVariant H264NALListModel::data(const QModelIndex &index, int role) const
         }
         }
     }
-    else if(index.column() == 2)
+    else if(index.column() == 2) {
+        switch(role)
+        {
+            case Qt::DisplayRole:
+            {
+                return m_nalList[index.row()].second;
+            }
+        }
+    }
+    else if(index.column() == 3)
     {
         switch(role)
         {
@@ -550,9 +561,9 @@ QVariant H264NALListModel::data(const QModelIndex &index, int role) const
 
 H264NALListModel::~H264NALListModel()
 {
-    foreach(h264_stream_t *h, m_nalList)
+    foreach(auto h, m_nalList)
     {
-        h264_free(h);
+        h264_free(h.first);
     }
 }
 
