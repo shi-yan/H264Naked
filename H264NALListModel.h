@@ -5,6 +5,7 @@
 #include <QByteArray>
 #include <h264_stream.h>
 #include <QVector>
+#include <QPair>
 
 class H264NALListModel : public QAbstractTableModel
 {
@@ -12,7 +13,7 @@ class H264NALListModel : public QAbstractTableModel
 
     QString m_filename;
     QByteArray m_fileBuffer;
-    QVector<h264_stream_t*> m_nalList;
+    QVector<QPair<h264_stream_t*, int> > m_nalList;
 
 public:
     H264NALListModel(const QString &filename, QObject *parent = NULL);

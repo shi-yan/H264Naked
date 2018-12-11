@@ -21,6 +21,8 @@ HEADERS  += MainWindow.h \
 
 FORMS    += mainwindow.ui
 
+CONFIG += c++11
+
 macx:INCLUDEPATH += /usr/local/include
 macx: LIBS += -L/usr/local/lib \
               -lh264bitstream
